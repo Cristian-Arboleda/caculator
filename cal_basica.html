@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculadora Basica</title>
+    <style>
+        body {
+            background: rgb(9, 28, 63);
+            color: white;
+            margin: 0px;
+            padding: 0px;
+            margin-top: 50px;
+            font-family: verdana;
+        }
+
+        main {
+            margin: auto;
+            max-width: 600px;
+        }
+
+        .calculator {
+            display: grid;
+            grid-template-rows: 1 1;
+            gap: 10px;
+            padding: 30px;
+            border: 5px solid rgb(122, 122, 135);
+            border-radius: 30px;
+            background: rgb(209, 166, 9);
+            box-shadow: 10px 10px 10px 10px black
+        }
+
+        .screen {
+            width: 100%;
+            height: 120px;
+            font-size: 70px;
+            border: none;
+            color: white;
+            background: black;
+            pointer-events: none;
+            text-align: center;
+            border-top-right-radius: 10px;
+            border-top-left-radius: 10px;
+        }
+
+        .screen_answer {
+            width: 100%;
+            height: 60px;
+            color: white;
+            background: black;
+            border: none;
+            text-align: end;
+            font-size: 40px;
+            pointer-events: none;
+        }
+
+        .calculator_button {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .calculator_number {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px
+        }
+
+        .calculator_operation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .button {
+            background: black;
+            color: white;
+            border: none;
+            width: 100px;
+            height: 80px;
+            font-size: 40px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 5px rgb(67, 61, 61);
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: white;
+            color: black;
+        }
+
+        .calculator_signos,
+        .calculator_function {
+            display: grid;
+            gap: 10px
+        }
+        .jake{
+            display:none;
+            margin: auto;
+            padding: 50px;
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/2053cca21f.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <main>
+        <div class="calculator" class="calculator" id="calculator">
+            <!--screen-->
+            <div class="calulator_screen">
+                <input type="text" class="screen" id="screen">
+                <input type="text" class="screen_answer" id="screen_answer">
+            </div>
+            <!--button-->
+            <div class="calculator_button">
+                <div class="calculator_number" id="calculator_number">
+                    <button class="button" id="7" name="7">7</button>
+                    <button class="button" id="8" name="8">8</button>
+                    <button class="button" id="9" name="9">9</button>
+                    <button class="button" id="6" name="6">6</button>
+                    <button class="button" id="5" name="5">5</button>
+                    <button class="button" id="4" name="4">4</button>
+                    <button class="button" id="3" name="3">3</button>
+                    <button class="button" id="2" name="2">2</button>
+                    <button class="button" id="1" name="1">1</button>
+                    <button class="button" id="0" name="0" style="grid-column: span 2; width: 100%;">0</butoon>
+                        <button class="button" id="punto" name=".">.</button>
+                </div>
+                <div class="calculator_operation">
+                    <div class="calculator_signos" id="calculator_signos">
+                        <button class="button" id="division" name="/">/</button>
+                        <button class="button" id="multiplicacion" name="x">x</button>
+                        <button class="button" id="resta" name="-">-</button>
+                        <button class="button" id="suma" name="+">+</button>
+                    </div>
+                    <div class="calculator_function" id="calculator_function">
+                        <button class="button" id="reset" name="reset">Rset</button>
+                        <button class="button" id="del" name="del"><i class="fa-solid fa-delete-left"></i></button>
+                        <button class="button" id="ans" name="ans">Ans</button>
+                        <button class="button" id="=" name="=">=</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+<script>
+    ans = 0
+    //digitar numeros en pantalla
+    const calculator_number = document.querySelectorAll('#calculator_number button');
+    calculator_number.forEach(
+        function (button) {
+            button.addEventListener('click', function (number) {
+            document.getElementById('screen').value += number.target.name;
+            })
+        }
+    );
+    //digitar signos
+    const calculator_signos = document.querySelectorAll('#calculator_signos button');
+    calculator_signos.forEach(function (button) {
+        button.addEventListener('click', function (signo) {
+            document.getElementById('screen').value += signo.target.name;
+        })
+    }
+    );
+    //Obtener resultado
+    document.getElementById('=').addEventListener('click', function () {
+        //obtener resultado al precionar '='
+        resultado = document.getElementById("screen").value;
+        resultado = resultado.replace('Ans', ans )
+        resultado = eval(resultado.replace(/x/g, '*'));
+        resultado = resultado.toFixed(7).replace(/(\.0|0){1,7}$/, '');
+        ans = resultado;
+        //mostrar en la segunda pantalla el resultado final
+        document.getElementById('screen_answer').value = resultado;
+
+        //mostra jake
+        document.getElementById('jake').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('jake').style.display = 'none'
+        }, 3000)
+    });
+    //reset
+    document.getElementById('reset').addEventListener('click', () => {
+        document.getElementById('screen').value = null;
+        document.getElementById('screen_answer').value = null;
+        resultado = null
+    });
+    //del
+    document.getElementById('del').addEventListener('click', () => {
+        document.getElementById('screen').value = document.getElementById('screen').value.slice(0, -1)
+    });
+    //ans
+    document.getElementById('ans').addEventListener('click', function(){
+        document.getElementById('screen').value += 'Ans'
+    })
+</script>
+<img class="jake" id="jake"
+src="https://i.pinimg.com/originals/20/d2/14/20d214ed3bcc9d7e443fe8abdada0356.gif">
+</body>
+</html>
